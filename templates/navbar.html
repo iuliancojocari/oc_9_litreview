@@ -16,9 +16,13 @@
             <a class="nav-link" href="#">Abonnements</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Se déconnecter</a>
+            <a class="nav-link" href="{% url 'users:disconnect' %}">
+              {% if user.is_authenticated %}
+                Se déconnecter
+              {% endif %}
+            </a>
           </li>
         </ul>
       </div>
     </div>
-  </nav>
+</nav>

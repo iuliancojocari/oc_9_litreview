@@ -1,19 +1,18 @@
-{% extends 'reviews/main.html' %}
+{% extends 'base.html' %}
 {% block content %}
 <section class="container d-flex justify-content-center mt-5">
-<form class="row col-lg-10 col-md-8 d-flex flex-column align-items-center align-items-sm-center" action="">
+<form class="row col-lg-10 col-md-8 d-flex flex-column align-items-center align-items-sm-center" method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
     <h3 class="col-lg-10 col-md-8 d-flex justify-content-center">Créer un ticket</h3>
     <div class="form-group col-lg-10 col-md-12 mt-2">
-        <label for="title">Titre</label>
-        <input type="text" class="form-control" name="username" placeholder="Mon premier ticket">
+        {{ form.title }}
     </div>
     <div class="form-group col-lg-10 col-md-12 mt-2">
-        <label for="description">Description</label>
-        <textarea class="form-control" name="description" placeholder="Description de mon ticket"></textarea>
+        {{ form.description }}
     </div>
     <div class="d-flex justify-content-between col-lg-10 col-md-12">
         <div class="form-group">
-        <input type="file" src="" alt="" class="form-control mt-3">
+            {{ form.image }}
         </div>
         <button type="file" class="btn btn-primary mt-3">Envoyer</button>
     </div>
