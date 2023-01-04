@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load add_classname %}
+
 {% block title %}LITReview - Page de connexion{% endblock title %}
 {% block content %}
 <section class="container d-flex justify-content-between mt-5">
@@ -10,10 +12,10 @@
         {% csrf_token %}
         <h3 class="col-lg-6 col-md-8 d-flex justify-content-center">Connectez-vous</h3>
         <div class="col-lg-6 col-md-8 form-group mt-2">
-            {{ form.username }}
+            {{ form.username|add_classname:"form-control" }}
         </div>
         <div class="col-lg-6 col-md-8 form-group mt-2">
-            {{ form.password }}
+            {{ form.password|add_classname:"form-control" }}
         </div>
         <div class="col-lg-6 col-md-8 d-flex justify-content-end mt-2">
             <button type="submit" class="btn btn-primary mt-2 ms-2">Se connecter</button>

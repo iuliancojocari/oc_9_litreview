@@ -5,6 +5,7 @@ from django.conf import settings
 from .models import Ticket
 from .forms import CreateTicketForm
 
+
 @login_required
 def create_ticket(request):
     form = CreateTicketForm()
@@ -25,6 +26,7 @@ def create_ticket(request):
         'form': form,
     }
     return render(request, 'reviews/create_ticket.html', context)
+
 
 @login_required
 def feeds(request):

@@ -18,6 +18,9 @@
             <a href="{% url 'users:auth' %}" class="btn btn-outline-secondary mt-2 ">Se connecter</a>
             <button type="submit" class="btn btn-primary mt-2 ">S'inscrire</button>
         </div>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
     </form>
 </section>
 {% endblock content %}
