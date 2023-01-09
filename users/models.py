@@ -5,6 +5,7 @@ from django.conf import settings
 class User(AbstractUser):
     first_name = None
     last_name = None
+    email = None
     
     REQUIRED_FIELDS = ['password']
     USERNAME_FIELD = 'username'

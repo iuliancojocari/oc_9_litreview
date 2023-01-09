@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.views.generic import View
 
 from .models import Ticket
 from .forms import CreateTicketForm
@@ -34,3 +35,4 @@ def feeds(request):
         'media_url': settings.MEDIA_URL,
     }
     return render(request, 'reviews/feeds.html', context)
+

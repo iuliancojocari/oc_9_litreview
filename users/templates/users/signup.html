@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load add_classname %}
 {% block title %}LITReview - Page d'inscription{% endblock title %}
 {% block content %}
 <section class="container d-flex justify-content-center mt-5">
@@ -6,13 +7,17 @@
         {% csrf_token %}
         <h3 class="col-lg-6 col-md-8 d-flex justify-content-center">Inscrivez-vous</h3>
         <div class="form-group col-lg-6 col-md-8 mt-2">
-            {{ form.username }}
+            <label for="username">Nom d'utilisateur*</label>
+            {{ form.username|add_classname:'form-control' }}
         </div>
         <div class="form-group col-lg-6 col-md-8 mt-2">
-            {{ form.password }}
+            <label for="username">Mot de passe*</label>
+            {{ form.password|add_classname:'form-control' }}
         </div>
         <div class="form-group col-lg-6 col-md-8 mt-2">
-            {{ form.confirmpassword }}
+            <label for="username">Confirmer le mot de passe*</label>
+            {{ form.confirm_password|add_classname:'form-control' }}
+            {{ form.confirm_password.errors }} 
         </div>
         <div class="col-lg-6 col-md-8 d-flex justify-content-between mt-2">
             <a href="{% url 'users:auth' %}" class="btn btn-outline-secondary mt-2 ">Se connecter</a>
@@ -22,6 +27,8 @@
             <p>{{ message }}</p>
         {% endif %}
     </form>
+    {{ form.errors }} 
+    {{ form.non_field_errors }}
 </section>
 {% endblock content %}
 

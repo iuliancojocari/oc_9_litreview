@@ -10,11 +10,15 @@
     </div>
     <form class="col-lg-6 col-md-8 d-flex flex-column align-items-end align-items-sm-end" action="" method="post">
         {% csrf_token %}
+        {{ form.errors }} 
+        {{ form.non_field_errors }}
         <h3 class="col-lg-6 col-md-8 d-flex justify-content-center">Connectez-vous</h3>
         <div class="col-lg-6 col-md-8 form-group mt-2">
+            <label for="username">Nom d'utilisateur</label>
             {{ form.username|add_classname:"form-control" }}
         </div>
         <div class="col-lg-6 col-md-8 form-group mt-2">
+            <label for="username">Mot de passe</label>
             {{ form.password|add_classname:"form-control" }}
         </div>
         <div class="col-lg-6 col-md-8 d-flex justify-content-end mt-2">

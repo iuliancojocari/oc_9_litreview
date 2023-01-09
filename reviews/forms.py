@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ModelForm
 
 
 class CreateTicketForm(forms.Form):
@@ -11,3 +12,4 @@ class CreateTicketForm(forms.Form):
     image = forms.ImageField(widget=forms.FileInput(
         attrs={'class': 'form-control mt-3'}),
         required=False)
+
