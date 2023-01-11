@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from .models import User, UserFollows
+from .models import User, UserFollow
 from django.contrib.auth.hashers import make_password
 
 
@@ -33,11 +33,23 @@ class SignUpForm(ModelForm):
             user.save()
         return user
 
-class UserFollowsForm(forms.Form):
-    followed_user = forms.CharField(max_length=150, required=True)
+class UserFollowForm(forms.Form):
+    followed_user = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'placeholder': "Nom d'utilisateur"}))
 
-    def save(self, request):
-        user = request.user
-        followed_user = User.objects.get(username=request.POST['followed_user'])
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
 
-        UserFollows.objects.create(user=user, followed_user=followed_user)
+    def clean_followed_user(self):
+        if not User.objects.filter(username=self.cleaned_data['followed_user']).exists():
+            raise forms.ValidationError('user does not exist')
+        
+        if UserFollow.objects.filter(user=self.user, followed_user__username=self.cleaned_data['followed_user']).exists():
+            raise forms.ValidationError("subscribtion exists")
+        
+        return self.cleaned_data['followed_user']
+
+    def save(self):
+        followed_user = User.objects.get(username=self.cleaned_data['followed_user'])
+
+        UserFollow.objects.create(user=self.user, followed_user=followed_user)

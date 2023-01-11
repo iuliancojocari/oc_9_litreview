@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.views.generic.edit import DeleteView
 
-from .models import UserFollows
+from .models import UserFollow
 
 from . import forms
 
@@ -53,29 +53,31 @@ class DisconnectView(View):
         logout(request)
         return redirect('users:auth')
 
-class UserFollowsView(View):
+class UserFollowView(View):
     template_name = 'users/user_follows.html'
-    form_class = forms.UserFollowsForm
+    form_class = forms.UserFollowForm
 
     def get(self, request):
         form = self.form_class()
 
-        followers = UserFollows.objects.filter(user=request.user).order_by('followed_user')
-        return render(request, self.template_name, context={'form': form, 'followers': followers})
+        followers = UserFollow.objects.filter(user=request.user).order_by('followed_user')
+        following = UserFollow.objects.filter(followed_user=request.user).order_by('user')
+        return render(request, self.template_name, context={'form': form, 'followers': followers, 'following': following})
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, user=request.user)
 
         if form.is_valid():
-            form.save(request)
+            form.save()
             form = self.form_class()
             return redirect('users:follows')
 
-        return render(request, self.template_name, context={'form': form})
+        followers = UserFollow.objects.filter(user=request.user).order_by('followed_user')
+        return render(request, self.template_name, context={'form': form, 'followers': followers})
 
 
 class UnfollowUserView(DeleteView):
-    model = UserFollows
+    model = UserFollow
     template_name = 'users/confirm_unfollow.html'
     success_url = '/users/follows'
 

@@ -13,15 +13,26 @@
                     <button type="submit" class="btn btn-primary">Envoyer</button>
                 </div>
             </div>
-            
+            {{ form.followed_user.errors }} 
         </form>
-        <div class="container d-flex flex-column align-items-center mt-5">
+        <div class="col-lg-12 col-md-12 d-flex flex-column align-items-center mt-5">
             <h3 class="col-lg-8 col-md-8 d-flex justify-content-center">Abonnements</h3>
-            <ul class="list-group col-lg-8 col-md-8 ">
+            <ul class="list-group col-lg-10 col-md-10 ">
             {% for follower in followers %}
-                <div class="col-lg-12 col-md-12 d-flex flex-row justify-content-around ">
+                <div class="d-flex flex-row justify-content-around ">
                     <li class="col-lg-10 col-md-10 list-group-item">{{ follower.followed_user.username }}</li>
-                    <a href="{% url 'users:unfollow' follower.id %}" class="btn btn-primary m-1">Désabonner</a>
+                    <a href="{% url 'users:unfollow' follower.id %}" class="col-lg-2 col-md-2 btn btn-primary m-1">Désabonner</a>
+                </div>
+
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-12 col-md-12 d-flex flex-column align-items-center mt-5">
+            <h3 class="d-flex justify-content-center">Abonnés</h3>
+            <ul class="list-group col-lg-10 col-md-10 ">
+            {% for follow in following %}
+                <div class="d-flex flex-row justify-content-around ">
+                    <li class="col-lg-12 col-md-12 list-group-item">{{ follow.user.username }}</li>
                 </div>
             {% endfor %}
             </ul>
