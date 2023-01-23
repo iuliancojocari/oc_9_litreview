@@ -1,12 +1,16 @@
-<form method="post">{% csrf_token %}
-     
- 
- 
- 
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-     
-     
-     
-     
-        <input type="submit" value="Confirm">
-    </form>
+{% extends 'base.html' %}
+{% block content %}
+<form class="container col-md-6 mt-5" method="post" >
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-header">
+            Confirmer la demande désabonnement
+        </div>
+        <div class="card-body">
+          <p class="card-text">Si vous changez d'avis, vous devrez refaire une demande pour vous abonner à <strong>{{ object.user }}</strong>.</p>
+          <button type="submit" class="btn btn-primary">Ne plus suivre</button>
+        </div>
+      </div>
+</form>
+
+{% endblock content %}

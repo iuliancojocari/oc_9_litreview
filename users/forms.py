@@ -34,7 +34,7 @@ class SignUpForm(ModelForm):
         return user
 
 class UserFollowForm(forms.Form):
-    followed_user = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'placeholder': "Nom d'utilisateur"}))
+    followed_user = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'placeholder': "Nom d'utilisateur", 'id': "validationCustom03"}))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -42,7 +42,7 @@ class UserFollowForm(forms.Form):
 
     def clean_followed_user(self):
         if not User.objects.filter(username=self.cleaned_data['followed_user']).exists():
-            raise forms.ValidationError('user does not exist')
+            raise forms.ValidationError("L'utilisateur n'a pas été trouvé !")
         
         if UserFollow.objects.filter(user=self.user, followed_user__username=self.cleaned_data['followed_user']).exists():
             raise forms.ValidationError("subscribtion exists")

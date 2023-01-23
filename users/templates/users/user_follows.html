@@ -2,6 +2,7 @@
 {% load add_classname %}
 {% block content %}
     <section class="container d-flex flex-column align-items-center mt-5">
+        
         <form class="col-lg-8 col-md-8 d-flex justify-content-center flex-column" action="" method='post'>
             {% csrf_token %}
             <h3 class="col-lg-12 col-md-12 d-flex justify-content-center">Suivre d'autres utilisateurs</h3>
@@ -13,7 +14,11 @@
                     <button type="submit" class="btn btn-primary">Envoyer</button>
                 </div>
             </div>
-            {{ form.followed_user.errors }} 
+            <div class="text-danger list-unstyled col-lg-11 col-md-11 d-flex flex-row align-self-center">
+                {% for error in form.followed_user.errors %}
+                    {{ error }}
+                {% endfor %}
+             </div>
         </form>
         <div class="col-lg-12 col-md-12 d-flex flex-column align-items-center mt-5">
             <h3 class="col-lg-8 col-md-8 d-flex justify-content-center">Abonnements</h3>
@@ -37,5 +42,5 @@
             {% endfor %}
             </ul>
         </div>
-    </section>
+    </section>    
 {% endblock content %}

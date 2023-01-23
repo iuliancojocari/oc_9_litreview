@@ -73,7 +73,8 @@ class UserFollowView(View):
             return redirect('users:follows')
 
         followers = UserFollow.objects.filter(user=request.user).order_by('followed_user')
-        return render(request, self.template_name, context={'form': form, 'followers': followers})
+        following = UserFollow.objects.filter(followed_user=request.user).order_by('user')
+        return render(request, self.template_name, context={'form': form, 'followers': followers, 'following': following})
 
 
 class UnfollowUserView(DeleteView):
