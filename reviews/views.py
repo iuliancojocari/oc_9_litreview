@@ -10,18 +10,13 @@ from .forms import CreateTicketForm, CreateReviewForm
 
 @login_required
 def create_ticket(request):
-    form = CreateTicketForm()
+    form = CreateTicketForm(user=request.user)
 
     if request.method == "POST":
-        form = CreateTicketForm(request.POST, request.FILES)
+        form = CreateTicketForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
-            title = form.cleaned_data['title']
-            description = form.cleaned_data['description']
-            image = request.FILES['image']
-            user = request.user
-            
-            ticket = Ticket(title=title, description=description, image=image, user=user)
-            ticket.save()
+            form.save()
+
             return redirect('reviews:feeds')
 
     context = {
@@ -44,8 +39,8 @@ class CreateReviewView(View):
     ticket_form_class = CreateTicketForm
 
     def get(self, request):
-        form_review = self.review_form_class()
-        form_ticket = self.ticket_form_class()
+        form_review = self.review_form_class(user=request.user)
+        form_ticket = self.ticket_form_class(user=request.user)
         context = {
             'form_ticket': form_ticket,
             'form_review': form_review
@@ -53,24 +48,20 @@ class CreateReviewView(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        form_review = self.review_form_class(request.POST)
-        form_ticket = self.ticket_form_class(request.POST, request.FILES)
+        form_review = self.review_form_class(request.POST, user=request.user)
+        form_ticket = self.ticket_form_class(request.POST, request.FILES, user=request.user)
 
         if all([form_review.is_valid(), form_ticket.is_valid()]):
-            ticket = form_ticket.save(commit=False)
-            ticket.user = request.user
-            ticket.save()
-            review = form_review.save(commit=False)
-            review.user = request.user
-            review.ticket = ticket
-            review.save()
-
+            ticket = form_ticket.save()
+            form_review.ticket = ticket
+            form_review.save()
+            
             messages.success(request, "Votre critique a été créée !")
             return redirect('reviews:feeds')
         
         else:
             form_review = self.review_form_class()
-            form_ticket = self.ticket_form_class()
+            form_ticket = self.ticket_form_class(user=request.user)
 
         context = {
             'form_ticket': form_ticket,
