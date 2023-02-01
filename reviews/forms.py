@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 
 from .models import Review, Ticket
 
@@ -29,6 +30,10 @@ class CreateReviewForm(ModelForm):
         self.instance.ticket = self.ticket
         return super().save(*args, **kwargs)
 
+    rating = forms.ChoiceField(widget=forms.RadioSelect(), choices=((0, "- 0"), (1, "- 1"), (2, "- 2"), (3, "- 3"), (4, "- 4"), (5, "- 5")))
+
     class Meta:
         model = Review
         fields = ["headline", "rating", "body"]
+        
+        

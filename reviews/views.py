@@ -3,8 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.views.generic import View
+from .utils import get_users_viewable_reviews
+from django.db.models import Value, CharField
+from itertools import chain
 
-from .models import Ticket
+from .models import Ticket, Review
 from .forms import CreateTicketForm, CreateReviewForm
 
 
@@ -31,6 +34,24 @@ def feeds(request):
         'media_url': settings.MEDIA_URL,
     }
     return render(request, 'reviews/feeds.html', context)
+
+class FeedView(View):
+    template_name = "reviews/feeds.html"
+
+    def get(self, request):
+
+        reviews = Review.get_users_viewable_reviews(request.user)
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        tickets = Ticket.get_users_viewable_tickets(request.user)
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+
+        posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+        
+        context = {
+            'media_url': settings.MEDIA_URL,
+            'posts': posts
+            }
+        return render(request, self.template_name, context)
 
 
 class CreateReviewView(View):

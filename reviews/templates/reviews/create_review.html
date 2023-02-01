@@ -2,38 +2,42 @@
 {% load add_classname %}
 
 {% block content %}
-    <form action="" method="post" enctype='multipart/form-data'>
+    <form class="col-lg-8 col-md-8 d-flex flex-column mx-auto mt-5 mb-5" method="post" enctype='multipart/form-data'>
         {% csrf_token %}
-        <h3>Créer une critique</h3>
-        <div>
-            <h5>Livre / Article</h5>
-            <div class="col-lg-10 col-md-10 form-group mt-2">
-                <label for="title">Titre</label>
-                {{ form_ticket.title|add_classname:'form-control' }}
+        <h3 class="mx-auto mb-4">Créer une critique</h3>
+        <div class="card">
+            <div class="card m-2 p-2">
+                <h5>Livre / Article</h5>
+                <div class="form-group mt-2">
+                    <label for="title">Titre</label>
+                        {{ form_ticket.title|add_classname:'form-control' }}
+                    </label>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="description">Description </label>
+                    {{ form_ticket.description|add_classname:'form-control' }}
+                </div>
+                <div class="form-group">
+                    {{ form_ticket.image|add_classname:'mt-2' }}
+                </div>
             </div>
-            <div class="col-lg-10 col-md-10 form-group mt-2">
-                <label for="description">Description </label>
-                {{ form_ticket.description|add_classname:'form-control' }}
+            <div class="card m-2 p-2">
+                <h5>Critique</h5>
+                <div class="form-group mt-2">
+                    <label for="headline">Titre</label>
+                    {{ form_review.headline|add_classname:'form-control' }}
+                </div>
+                <div class="form-group mt-2 d-flex">
+                    {{ form_review.rating|add_classname:'' }}
+                </div>
+                <div class="form-group mt-2">
+                    <label for="body">Commentaire</label>
+                    {{ form_review.body|add_classname:'form-control' }}
+                </div>
             </div>
-            <div class="form-group">
-                {{ form_ticket.image }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary m-2 " type="submit">Envoyer</button>
             </div>
         </div>
-        <div>
-            <h5>Critique</h5>
-            <div class="col-lg-10 col-md-10 form-group mt-2">
-                <label for="headline">Titre</label>
-                {{ form_review.headline|add_classname:'form-control' }}
-            </div>
-            <div class="col-lg-10 col-md-10 form-group mt-2">
-                <label for="rating">Note</label>
-                {{ form_review.rating|add_classname:'form-control' }}
-            </div>
-            <div class="col-lg-10 col-md-10 form-group mt-2">
-                <label for="body">Commentaire</label>
-                {{ form_review.body|add_classname:'form-control' }}
-            </div>
-        </div>
-        <button type="submit">Créer</button>
     </form>
 {% endblock content %}

@@ -7,6 +7,18 @@
             <a href="{% url 'reviews:create-review' %}" class="btn btn-dark">Créer une critique</a>
         </section>
         <section class="d-flex flex-column align-items-center pt-3 pb-3">
+            {% for post in posts %}
+                {% if post.content_type == 'TICKET' %}
+                    {% include 'reviews/ticket_snippet.html' %}
+                {% elif post.content_type == 'REVIEW' %}
+                    {% include 'reviews/review_snippet.html' %}
+                {% endif %}
+            {% endfor %}
+        </section>
+    </main>
+<!--
+
+<section class="d-flex flex-column align-items-center pt-3 pb-3">
             <div class="card col-lg-8 col-md-12 m-1 bg-light">
                 <div class="card-body">
                     <div class="d-flex flex-row justify-content-between">
@@ -66,4 +78,7 @@
 
         </section>
     </main>
+
+-->
+        
 {% endblock content %}
