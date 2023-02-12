@@ -5,7 +5,7 @@
                 {% if user == post.user %}
                     Vous avez publié une critique
                 {% else %}
-                    {{ user }} a publié une critique
+                    {{ post.user }} a publié une critique
                 {% endif %}
             </small></p>
                 <p class="card-text"><small class="text-muted">Date : {{ post.time_created}}
@@ -23,8 +23,8 @@
     </div>
     {% if user == post.user %}
         <div class="d-flex justify-content-end m-2">
-            <a href="" class="btn btn-dark m-2">Modifier</a>
-            <a href="" class="btn btn-dark m-2">Supprimer</a>
+            <a href="{% url 'reviews:review-update' post.id %}" class="btn btn-dark m-2">Modifier</a>
+            <a href="{% url 'reviews:review-delete' post.id %}" class="btn btn-dark m-2">Supprimer</a>
         </div>
     {% endif %}
 </div>

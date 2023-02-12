@@ -17,3 +17,13 @@ class UserFollow(models.Model):
 
     class Meta:
         unique_together = ('user', 'followed_user')
+
+    @classmethod
+    def get_user_follow(cls, user):
+        follows = cls.objects.filter(user=user)
+        followed_users = []
+
+        for follow in follows:
+            followed_users.append(follow.followed_user)
+
+        return followed_users

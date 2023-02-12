@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load add_classname %}
+
+{% block content %}
+    <form class="col-lg-8 col-md-8 d-flex flex-column mx-auto mt-5 mb-5" method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <h3 class="mx-auto mb-4">Créer une critique</h3>
+        <div class="card">
+            <h5 class="p-3">Vous êtes en train de modifier votre critique</h4>
+            <div class="card col-lg-8 col-md-8 m-2 p-2 mx-auto">
+                <div class="card-body">
+                    <div class="d-flex flex-row justify-content-between">
+                    <p class="card-text"><small class="text-muted">
+                        {{ user }} a demandé une critique
+                    </small></p>
+                    <p class="card-text"><small class="text-muted">Date: {{ review.ticket.time_created }}</small></p>
+                    </div>
+                    <h5 class="card-title">{{ review.ticket.title }}</h5>
+                    <p class="card-text">{{ review.ticket.description }}</p>
+                </div>
+                <img class="align-self-center mb-2" height="500px" width="350px" align="center" src="{{ media_url }}{{ review.ticket.image }}" alt="Card image cap">
+            </div>
+            <div class="card m-2 p-2">
+                <h5>Critique</h5>
+                <div class="form-group mt-2">
+                    <label for="headline">Titre</label>
+                    {{ form_review.headline|add_classname:'form-control' }}
+                </div>
+                <div class="form-group mt-2 d-flex">
+                    {{ form_review.rating|add_classname:'' }}
+                </div>
+                <div class="form-group mt-2">
+                    <label for="body">Commentaire</label>
+                    {{ form_review.body|add_classname:'form-control' }}
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary m-2 " type="submit">Envoyer</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

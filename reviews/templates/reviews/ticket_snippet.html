@@ -5,16 +5,16 @@
             {% if user == post.user %}
                     Vous avez demandé une critique
             {% else %}
-                {{ user }} a demandé une critique
+                {{ post.user }} a demandé une critique
             {% endif %}
         </small></p>
         <p class="card-text"><small class="text-muted">Date: {{ post.time_created }}</small></p>
         </div>
         <h5 class="card-title">{{ post.title }}</h5>
-        <p class="card-text">{{ post.title }}</p>
+        <p class="card-text">{{ post.description }}</p>
     </div>
     <img class="align-self-center mb-2" height="500px" width="350px" align="center" src="{{ media_url }}{{ post.image }}" alt="Card image cap">
     <div class="d-flex justify-content-end m-2">
-        <a href="" class="btn btn-dark">Créer une critique</a>
+        <a href="{% url 'reviews:respond-ticket' post.id %}" class="btn btn-dark">Créer une critique</a>
     </div>
 </div>

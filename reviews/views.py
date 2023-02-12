@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
@@ -6,6 +6,8 @@ from django.views.generic import View
 from .utils import get_users_viewable_reviews
 from django.db.models import Value, CharField
 from itertools import chain
+from django.views.generic.edit import DeleteView
+
 
 from .models import Ticket, Review
 from .forms import CreateTicketForm, CreateReviewForm
@@ -28,13 +30,6 @@ def create_ticket(request):
     return render(request, 'reviews/create_ticket.html', context)
 
 
-@login_required
-def feeds(request):
-    context = {
-        'media_url': settings.MEDIA_URL,
-    }
-    return render(request, 'reviews/feeds.html', context)
-
 class FeedView(View):
     template_name = "reviews/feeds.html"
 
@@ -45,11 +40,15 @@ class FeedView(View):
         tickets = Ticket.get_users_viewable_tickets(request.user)
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
+        replied_tickets, replied_reviews = Ticket.get_replied_tickets(tickets)
+
         posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
         
         context = {
             'media_url': settings.MEDIA_URL,
-            'posts': posts
+            'posts': posts,
+            'replied_tickets': replied_tickets,
+            'replied_reviews': replied_reviews
             }
         return render(request, self.template_name, context)
 
@@ -89,3 +88,81 @@ class CreateReviewView(View):
             'form_review': form_review
         }
         return render(request, self.template_name, context)
+
+class RespondTicketView(View):
+    template_name = 'reviews/respond_ticket.html'
+    review_form_class = CreateReviewForm
+    ticket_form_class = CreateTicketForm
+
+    def get(self, request, pk):
+
+        form_review = self.review_form_class(user=request.user)
+
+        ticket =  get_object_or_404(Ticket, id=pk)
+
+        context = {
+            'media_url': settings.MEDIA_URL,
+            'form_review': form_review,
+            'ticket': ticket
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        form_review = self.review_form_class(request.POST, user=request.user)
+        ticket_object =  get_object_or_404(Ticket, id=pk)
+
+        if form_review.is_valid():
+            form_review.ticket = ticket_object
+            form_review.save()
+
+            messages.success(request, "Votre critique a été créée !")
+            return redirect('reviews:feeds')
+
+        context = {
+                'media_url': settings.MEDIA_URL,
+                'form_review': form_review,
+                'ticket': ticket_object
+            }
+
+        return render(request, self.template_name, context)
+
+class ReviewUpdateView(View):
+    template_name = 'reviews/review_update.html'
+    review_form_class = CreateReviewForm
+
+    def get(self, request, pk):
+        review = get_object_or_404(Review, id=pk)
+        form_review = self.review_form_class(instance=review, user=request.user)
+
+        context = {
+            'media_url': settings.MEDIA_URL,
+            'form_review': form_review,
+            'review': review
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        review = get_object_or_404(Review, id=pk)
+        form_review = self.review_form_class(request.POST, instance=review, user=request.user)
+
+        if form_review.is_valid():
+            ticket = review.ticket
+            form_review.ticket = ticket
+            form_review.save()
+
+            messages.success(request, "Votre critique a été mise à jour !")
+            return redirect('reviews:feeds')
+
+        context = {
+            'media_url': settings.MEDIA_URL,
+            'form_review': form_review
+        }
+        return render(request, self.template_name, context)
+
+
+class DeleteReviewView(DeleteView):
+    model = Review
+    template_name = 'reviews/confirm_review_deletion.html'
+    success_url = '/reviews/feeds'
