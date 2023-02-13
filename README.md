@@ -1,23 +1,21 @@
-# 1. Initialiser le projet
+# Projet 9 - Developpeur d'Application Python OC
 
-## 1.1. Cloner le projet depuis ce dépôt vers votre poste de travail. 
+Livrables du projet 9 de la formation Developpeur d'Application Python
 
-Pour cloner le repository sur votre poste de travail, exécutez la commande qui suit : 
-```Shell
+## 1. Initialiser le projet
+
+### - Récupèrer le projet
+```
 git clone https://github.com/iuliancojocari/oc_9_litreview.git
 ```
 
-## 1.2. Mise en place de l'environnement virtuel Python
-
-Pour configurer l'environnement virtuel Python, exécutez la commande suivante : 
-```Shell
+### - 1.2. Mise en place de l'environnement virtuel Python
+```
 python -m venv venv
+venv/Scripts/activate
 ```
 
-### 1.3. Installation des packets
-
-Pour le bon fonctionnement du projet, vous devez installer les packets listés dans le fichier "requirements.txt". 
-Pour installer ces packets, exécutez la commande : 
-```Shell
+### - 1.3. Installation des paquets requis
+```
 pip install -r requirements.txt
 ```
