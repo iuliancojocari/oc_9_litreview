@@ -1,9 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
 from .models import User, UserFollow
-from django.contrib.auth.hashers import make_password
 
 
 class LoginForm(forms.Form):
@@ -17,11 +14,11 @@ class SignUpForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ["username", "password"]
 
     def clean_confirm_password(self):
-        password = self.cleaned_data['password']
-        confirm_password = self.cleaned_data['confirm_password']
+        password = self.cleaned_data["password"]
+        confirm_password = self.cleaned_data["confirm_password"]
 
         if confirm_password != password:
             raise forms.ValidationError("passwords do not match")
@@ -33,23 +30,34 @@ class SignUpForm(ModelForm):
             user.save()
         return user
 
+
 class UserFollowForm(forms.Form):
-    followed_user = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'placeholder': "Nom d'utilisateur", 'id': "validationCustom03"}))
+    followed_user = forms.CharField(
+        max_length=150,
+        required=True,
+        widget=forms.TextInput(
+            attrs={"placeholder": "Nom d'utilisateur", "id": "validationCustom03"}
+        ),
+    )
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
     def clean_followed_user(self):
-        if not User.objects.filter(username=self.cleaned_data['followed_user']).exists():
+        if not User.objects.filter(
+            username=self.cleaned_data["followed_user"]
+        ).exists():
             raise forms.ValidationError("L'utilisateur n'a pas été trouvé !")
-        
-        if UserFollow.objects.filter(user=self.user, followed_user__username=self.cleaned_data['followed_user']).exists():
+
+        if UserFollow.objects.filter(
+            user=self.user, followed_user__username=self.cleaned_data["followed_user"]
+        ).exists():
             raise forms.ValidationError("subscribtion exists")
-        
-        return self.cleaned_data['followed_user']
+
+        return self.cleaned_data["followed_user"]
 
     def save(self):
-        followed_user = User.objects.get(username=self.cleaned_data['followed_user'])
+        followed_user = User.objects.get(username=self.cleaned_data["followed_user"])
 
         UserFollow.objects.create(user=self.user, followed_user=followed_user)

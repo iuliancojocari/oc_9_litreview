@@ -14,7 +14,14 @@
         <p class="card-text">{{ post.description }}</p>
     </div>
     <img class="align-self-center mb-2" height="500px" width="350px" align="center" src="{{ media_url }}{{ post.image }}" alt="Card image cap">
-    <div class="d-flex justify-content-end m-2">
-        <a href="{% url 'reviews:respond-ticket' post.id %}" class="btn btn-dark">Créer une critique</a>
-    </div>
+    {% if user != post.user %}
+        <div class="d-flex justify-content-end m-2">
+            <a href="{% url 'reviews:respond-ticket' post.id %}" class="btn btn-dark">Créer une critique</a>
+        </div>
+    {% else %}
+        <div class="d-flex justify-content-end m-2">
+            <a href="{% url 'reviews:ticket-update' post.id %}" class="btn btn-dark m-2">Modifier</a>
+            <a href="{% url 'reviews:ticket-delete' post.id %}" class="btn btn-dark m-2">Supprimer</a>
+        </div>
+    {% endif %}
 </div>

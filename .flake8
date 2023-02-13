@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 119
+
+exclude=
+    .gitignore,
+    venv/,
+    README.md,
+    requirements.txt,
+    users/migrations,
+    reviews/migrations,

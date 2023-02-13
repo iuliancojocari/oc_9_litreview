@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load add_classname %}
+
+{% block content %}
+<section class="container d-flex justify-content-center mt-5">
+<form class="row col-lg-10 col-md-8 d-flex flex-column align-items-center align-items-sm-center" method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <h3 class="col-lg-10 col-md-8 d-flex justify-content-center">Créer un ticket</h3>
+    <div class="form-group col-lg-10 col-md-12 mt-2">
+        {{ ticket_form.title|add_classname:'form-control' }}
+    </div>
+    <div class="form-group col-lg-10 col-md-12 mt-2">
+        {{ ticket_form.description|add_classname:'form-control' }}
+    </div>
+    <div class="d-flex justify-content-between col-lg-10 col-md-12 mt-3 mb-3">
+        <img class="align-self-center mb-2" height="500px" width="350px" align="center" src="{{ media_url }}{{ ticket.image }}" alt="Card image cap">
+    </div>
+    <div class="d-flex justify-content-between col-lg-10 col-md-12 mb-5">
+        <div class="form-group mt-3">
+            {{ ticket_form.image|add_classname:'form-control' }}
+        </div>
+        <button type="file" class="btn btn-primary mt-3">Envoyer</button>
+    </div>
+</form>
+</section>
+{% endblock content %}
