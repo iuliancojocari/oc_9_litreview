@@ -19,6 +19,10 @@ class Ticket(models.Model):
         return self.title
 
     @classmethod
+    def get_user_tickets(cls, user):
+        return cls.objects.filter(user=user)
+
+    @classmethod
     def get_users_viewable_tickets(cls, user):
         followed_users = UserFollow.get_user_follow(user)
         followed_users.append(user)
@@ -69,6 +73,10 @@ class Review(models.Model):
 
     def __str__(self):
         return self.ticket
+
+    @classmethod
+    def get_user_reviews(cls, user):
+        return cls.objects.filter(user=user)
 
     @classmethod
     def get_users_viewable_reviews(cls, user):

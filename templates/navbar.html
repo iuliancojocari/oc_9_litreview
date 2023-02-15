@@ -10,7 +10,7 @@
             <a class="nav-link active" aria-current="page" href="/reviews/feeds">Flux</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="reviews/posts">Posts</a>
+            <a class="nav-link" href="{% url 'reviews:posts' %}">Posts</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:follows' %}">Abonnements</a>
@@ -18,7 +18,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:disconnect' %}">
               {% if user.is_authenticated %}
-                Se déconnecter
+                Se déconnecter - {{user}}
               {% endif %}
             </a>
           </li>c 

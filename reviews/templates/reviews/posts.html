@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}LITReview - Feeds{% endblock title %}
+{% block content %}
+    <main class="container">
+        <section class="d-flex flex-column align-items-center pt-3 pb-3">
+            {% for post in posts %}
+                {% if post.content_type == 'TICKET' %}
+                    {% include 'reviews/ticket_snippet.html' %}
+                {% elif post.content_type == 'REVIEW' %}
+                    {% include 'reviews/review_snippet.html' %}
+                {% endif %}
+            {% endfor %}
+        </section>
+    </main>        
+{% endblock content %}

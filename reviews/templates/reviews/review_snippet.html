@@ -16,6 +16,13 @@
     </div>
     <div class="card col-lg-8 col-md-12 m-1 align-self-center mb-2 bg-secondary">
         <div class="card-body">
+            <div class="d-flex flex-row justify-content-between">
+                <p class="card-text text-dark"><small>
+                    Ticket - {{ post.user }}
+                </small></p>
+                    <p class="card-text"><small>Date : {{ post.time_created}}
+                </small></p>
+            </div>
             <h5 class="card-title">{{ post.ticket.title }}</h5>
             <p class="card-text">{{ post.ticket.description }}</p>
         </div>

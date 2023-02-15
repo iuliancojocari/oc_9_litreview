@@ -37,18 +37,28 @@ class FeedView(View):
         tickets = Ticket.get_users_viewable_tickets(request.user)
         tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
-        replied_tickets, replied_reviews = Ticket.get_replied_tickets(tickets)
+        posts = sorted(
+            chain(reviews, tickets), key=lambda post: post.time_created, reverse=True
+        )
+
+        context = {"media_url": settings.MEDIA_URL, "posts": posts}
+        return render(request, self.template_name, context)
+
+
+class PostsView(View):
+    template_name = "reviews/posts.html"
+
+    def get(self, request):
+        tickets = Ticket.get_user_tickets(user=request.user)
+        tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
+        reviews = Review.get_user_reviews(user=request.user)
+        reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
         posts = sorted(
             chain(reviews, tickets), key=lambda post: post.time_created, reverse=True
         )
 
-        context = {
-            "media_url": settings.MEDIA_URL,
-            "posts": posts,
-            "replied_tickets": replied_tickets,
-            "replied_reviews": replied_reviews,
-        }
+        context = {"media_url": settings.MEDIA_URL, "posts": posts}
         return render(request, self.template_name, context)
 
 
