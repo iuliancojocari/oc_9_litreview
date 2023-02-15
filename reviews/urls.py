@@ -5,9 +5,13 @@ from . import views
 
 app_name = "reviews"
 urlpatterns = [
-    path("create-ticket/", views.create_ticket, name="create-ticket"),
     path("feeds/", login_required(views.FeedView.as_view()), name="feeds"),
     path("posts/", login_required(views.PostsView.as_view()), name="posts"),
+    path(
+        "create-ticket/",
+        login_required(views.CreateTicketView.as_view()),
+        name="create-ticket",
+    ),
     path(
         "create-review/",
         login_required(views.CreateReviewView.as_view()),

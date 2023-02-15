@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.views.generic import View
@@ -11,21 +10,32 @@ from .models import Ticket, Review
 from .forms import CreateTicketForm, CreateReviewForm
 
 
-@login_required
-def create_ticket(request):
-    form = CreateTicketForm(user=request.user)
+class CreateTicketView(View):
+    template_name = "reviews/create_ticket.html"
+    ticket_form_class = CreateTicketForm
 
-    if request.method == "POST":
-        form = CreateTicketForm(request.POST, request.FILES, user=request.user)
-        if form.is_valid():
-            form.save()
+    def get(self, request):
+        ticket_form = self.ticket_form_class(user=request.user)
 
+        context = {"ticket_form": ticket_form}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        ticket_form = self.ticket_form_class(
+            request.POST, request.FILES, user=request.user
+        )
+
+        if ticket_form.is_valid():
+            ticket_form.save()
+            messages.success(request, "Votre ticket a été créé !")
             return redirect("reviews:feeds")
+        else:
+            ticket_form = self.ticket_form_class(user=request.user)
 
-    context = {
-        "form": form,
-    }
-    return render(request, "reviews/create_ticket.html", context)
+        context = {"ticket_form": ticket_form}
+
+        return render(request, self.template_name, context)
 
 
 class FeedView(View):

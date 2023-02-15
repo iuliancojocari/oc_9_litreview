@@ -36,3 +36,7 @@ python manage.py runserver
 
 | *Identifiant* | *Mot de passe* |
 |---------------|----------------|
+| utilisateur_1 |   Azerty1234   |
+| utilisateur_2 |   Azerty1234   |
+| utilisateur_3 |   Azerty1234   |
+| utilisateur_4 |   Azerty1234   |
