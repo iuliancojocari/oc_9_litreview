@@ -36,10 +36,3 @@ python manage.py runserver
 
 | *Identifiant* | *Mot de passe* |
 |---------------|----------------|
-| annaleecall   | password321    |
-| Bristlewood   | password321    |
-| gardensnail03 | password321    |
-| KaitReads     | password321    |
-| MarbleFox     | password321    |
-| QElizabeth    | password321    |
-| TestUser      | password321    |
